@@ -1,0 +1,41 @@
+{
+  "name": "bus",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "jest --watch",
+    "test:ci": "jest --ci"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "transform": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/fileTransformer.js"
+    }
+  },
+  "dependencies": {
+    "antd": "^4.12.3",
+    "axios": "^0.21.1",
+    "cookie": "^0.4.1",
+    "js-cookie": "^2.2.1",
+    "next": "10.0.5",
+    "nprogress": "^0.2.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "sass": "^1.32.5",
+    "universal-cookie": "^4.0.4"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.1.0",
+    "@testing-library/react": "^9.4.0",
+    "babel-jest": "^25.1.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^25.1.0",
+    "moxios": "^0.4.0",
+    "react-test-renderer": "^16.12.0"
+  }
+}

@@ -7,31 +7,34 @@ if (process.env.NODE_ENV === "production") {
 
 class UrlService {
   static loginUrl() {
-    return apiDomain + "api/login";
+    return apiDomain + "api/v1/login";
   }
   static currentUserProfileUrl() {
-    return apiDomain + "api/user";
+    return apiDomain + "api/v1/user";
+  }
+  static getUsersList() {
+    return apiDomain + "api/v1/users";
   }
   static saveUserProfileUrl() {
-    return apiDomain + "api/user";
+    return apiDomain + "api/v1/user";
   }
   static getCurrentUserAcitiviesUrl() {
-    return apiDomain + "api/activities";
+    return apiDomain + "api/v1/activities";
   }
   static getTodoUrl() {
-    return apiDomain + "api/todos";
+    return apiDomain + "api/v1/todos";
   }
   static markTodoCompleteUrl(id) {
-    return apiDomain + "api/todo/complete/" + id;
+    return apiDomain + "api/v1/todo/complete/" + id;
   }
   static changeTodoOrderUrl() {
-    return apiDomain + "api/todo/reorder";
+    return apiDomain + "api/v1/todo/reorder";
   }
   static saveTodoUrl() {
-    return apiDomain + "api/todo/save";
+    return apiDomain + "api/v1/todo/save";
   }
   static removeTodoUrl() {
-    return apiDomain + "api/todo/remove";
+    return apiDomain + "api/v1/todo/remove";
   }
 }
 

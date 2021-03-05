@@ -2,7 +2,7 @@ import axios from "axios";
 import CookieService from "./CookieService";
 
 class HttpService {
-  async get(url) {
+  async get(url, setServerError, setLoading) {
     const at = CookieService.get("access_token");
     const options = {
       headers: {
@@ -10,9 +10,14 @@ class HttpService {
       },
     };
     try {
-      return await axios.get(url, options);
+      setLoading(true);
+      const response = await axios.get(url, options);
+      console.log("response", response);
+      setData(response.data);
+      setLoading(false);
     } catch (error) {
-      console.error("Not able to fetch data", error);
+      setLoading(false);
+      setServerError("Not able to fetch data");
     }
   }
 

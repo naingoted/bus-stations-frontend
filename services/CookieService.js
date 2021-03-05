@@ -8,7 +8,6 @@ class CookieService {
   }
 
   set(key, value, options) {
-    console.log(options)
     cookie.set(key, value, options);
   }
 

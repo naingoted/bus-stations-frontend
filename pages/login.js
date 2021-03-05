@@ -7,16 +7,17 @@ const Login = () => {
   const router = useRouter();
   const dispatch = useAuthDispatch();
   const [formInput, setFormInput] = useState({
-    email: "",
-    password: "",
+    email: "bradly.vandervort@example.com",
+    password: "password",
     remember: true,
   });
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const response = await AuthService.doUserLogin(dispatch, formInput);
+    
     if (response) {
     //   AuthService.handleLoginSuccess(response, formInput.remember);
-      router.push("/");
+      
     } else {
       alert("Please check your credentials and try agian");
     }
@@ -39,7 +40,7 @@ const Login = () => {
           id="email"
           onChange={updateFormInput}
           placeholder="email address"
-          required
+        //   required
         />
         <label htmlFor="password"> Password </label>
         <input
@@ -48,7 +49,7 @@ const Login = () => {
           id="password"
           onChange={updateFormInput}
           placeholder="password"
-          required
+        //   required
         />
         <label htmlFor="remember"> Remember me</label>
         <input

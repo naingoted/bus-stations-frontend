@@ -22,7 +22,7 @@ const MonitorList = () => {
                 dispatch({ type: "setSelectedItem", payload: item });
               }}
             >
-              <div title="Api" className="api">{item.friendly_name}</div>
+              <div title="Api" className="api">{item.name}</div>
               <div className="server-status">
                 <span className="dot"></span>
                 <span>Operational</span>

@@ -7,7 +7,7 @@ import {
   useMonitorState,
   useMonitorDispatch,
 } from "../../contexts/monitorContext";
-import { getUpDownApi } from "../../actions/hookActions";
+import HttpService from "@/services/HttpService";
 
 const Services = () => {
   const { data, error, errorMessage, selectedItem } = useMonitorState();
@@ -28,12 +28,13 @@ const Services = () => {
   };
   useEffect(() => {
     // side effect.
-    getUpDownApi(setData, setServerError, setLoading);
+    HttpService.get(setData, setServerError, setLoading);
   }, []);
-  console.log(useMonitorState())
   return (
     <div data-testid="monitor-app">
-      {errorMessage && <ErrorModal onClose={onErrorClear}>{errorMessage}</ErrorModal>}
+      {errorMessage && (
+        <ErrorModal onClose={onErrorClear}>{errorMessage}</ErrorModal>
+      )}
       <div className="title">Monitors</div>
       <MonitorList data={data} />
       <div className="title">Overall Uptime</div>

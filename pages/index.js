@@ -1,15 +1,24 @@
 import Head from "next/head";
-import Monitor from "../components/monitor/Monitor";
-import Status from "../components/monitor/Status";
-import { MonitorProvider } from "../contexts/monitorContext";
+import { useRouter } from "next/router";
+import { useAuthState } from "@/contexts/authContext";
+import Monitor from "@/components/monitor/Monitor"
+const isServer = typeof window === "undefined";
 
 export default function Home() {
+  const router = useRouter();
+  const authState = useAuthState();
+  console.log("asdf", authState.userDetails);
+  if(!authState.token && !isServer) {
+    router.push('/login')
+  }
   return (
-    <MonitorProvider>
+    <>
       <Head>
         <title>AWS Services status page</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    </MonitorProvider>
+      <Monitor />
+    </>
   );
 }
+

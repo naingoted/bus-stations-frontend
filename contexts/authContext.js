@@ -3,20 +3,19 @@ import CookieService from "services/CookieService";
 
 const AuthStateContext = React.createContext();
 const AuthDispatchContext = React.createContext();
+const isServer = typeof window === "undefined";
 
-let user = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")).user
-  : "";
-let token = CookieService.get("access_token") | "";
+let user = CookieService.get("user");
+let token = CookieService.get("access_token");
 
-export const initialState = {
-  userDetails: "" || user,
-  token: "" || token,
+const initialState = {
+  userDetails: user || "",
+  token: token || "",
   loading: false,
   errorMessage: null,
 };
 
-export const AuthReducer = (initialState, action) => {
+const AuthReducer = (initialState, action) => {
   switch (action.type) {
     case "REQUEST_LOGIN":
       return {
@@ -27,12 +26,13 @@ export const AuthReducer = (initialState, action) => {
       return {
         ...initialState,
         token: action.payload.access_token,
+        userDetails: action.payload.user,
         loading: false,
       };
     case "LOGOUT":
       return {
         ...initialState,
-        user: "",
+        userDetails: "",
         token: "",
       };
 
@@ -47,7 +47,7 @@ export const AuthReducer = (initialState, action) => {
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
-export function useAuthState() {
+function useAuthState() {
   const context = React.useContext(AuthStateContext);
   if (context === undefined) {
     throw new Error("useAuthState must be used within a AuthProvider");
@@ -56,7 +56,7 @@ export function useAuthState() {
   return context;
 }
 
-export function useAuthDispatch() {
+function useAuthDispatch() {
   const context = React.useContext(AuthDispatchContext);
   if (context === undefined) {
     throw new Error("useAuthDispatch must be used within a AuthProvider");
@@ -65,7 +65,7 @@ export function useAuthDispatch() {
   return context;
 }
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [user, dispatch] = useReducer(AuthReducer, initialState);
 
   return (
@@ -76,6 +76,5 @@ export const AuthProvider = ({ children }) => {
     </AuthStateContext.Provider>
   );
 };
-
 
 export { AuthProvider, useAuthState, useAuthDispatch };

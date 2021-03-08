@@ -6,10 +6,10 @@ const AppDispatchContext = React.createContext();
  * Using reducer instead of useState for cleaner state managment
  */
 const inititalState = {
-  buses: null,
+  buses: {},
+  expandedStation: null,
   selectedItem: null,
-  page: 1,
-  total: 0,
+  stationsNearBy: null,
   loading: false,
   errorMesage: null,
   error: false,
@@ -23,6 +23,10 @@ const appReducer = (state, action) => {
   switch (action.type) {
     case "setBuses":
       return { ...state, buses: action.payload };
+    case "setExpandedStation":
+      return { ...state, expandedStation: action.payload };
+    case "setStationsNearBy":
+      return { ...state, stationsNearBy: action.payload };
     case "setStations":
       return { ...state, stations: action.payload };
     case "setRoutes":

@@ -14,8 +14,6 @@ const CreateBus = () => {
   const { stations, routes, routesLoading, stationsLoading } = useAppState();
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
-  const setServerError = (isServerError) =>
-    dispatch({ type: "setServerError", payload: isServerError });
   const setRoutesData = (data) => {
     dispatch({ type: "setRoutes", payload: data });
   };
@@ -27,9 +25,6 @@ const CreateBus = () => {
   };
   const setRoutesLoading = (status) => {
     dispatch({ type: "setRoutesLoading", payload: status });
-  };
-  const onErrorClear = () => {
-    dispatch({ type: "clearError" });
   };
   const onFinish = async (values) => {
     if (values?.status == undefined || values?.status == false) {
@@ -46,96 +41,88 @@ const CreateBus = () => {
     }
   };
   const loadSelectOptions = useCallback(async () => {
-    await httpService.get(
-      urlService.getStationsUrl(),
-      setStationsData,
-      setServerError,
-      setStationsLoading
-    );
-    await httpService.get(
-      urlService.getRoutesUrl(),
-      setRoutesData,
-      setServerError,
-      setRoutesLoading
-    );
+    setRoutesLoading(true);
+    setStationsLoading(true);
+    const routeResponse = await httpService.get(urlService.getRoutesUrl());
+    if (routeResponse?.data) {
+      setRoutesData(routeResponse.data);
+    }
+    setRoutesLoading(false);
+    const stationResponse = await httpService.get(urlService.getStationsUrl());
+    if (stationResponse?.data) {
+      setStationsData(stationResponse.data);
+    }
+    setStationsLoading(false);
   });
   useEffect(() => {
     loadSelectOptions();
   }, []);
   return (
-      <Row justify="center" className={"card create-bus"}>
-          <Form
-            name="create-bus"
-            form={form}
-            onFinish={onFinish}
+    <Row justify="center" className={"card create-bus"}>
+      <Form name="create-bus" form={form} onFinish={onFinish}>
+        <Form.Item
+          name="busCode"
+          rules={[
+            {
+              required: true,
+              message: "Please input your bus code!",
+            },
+          ]}
+        >
+          <Input placeholder="bus code" />
+        </Form.Item>
+        <Form.Item
+          name="routeId"
+          rules={[
+            {
+              required: true,
+              message: "Please select route!",
+            },
+          ]}
+        >
+          <Select placeholder="Select route" allowClear loading={routesLoading}>
+            {routes?.data?.map((item) => {
+              return (
+                <Option key={item.id} value={item.id}>
+                  {item.name}
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="stationId"
+          rules={[
+            {
+              required: true,
+              message: "Please select a bus stop!",
+            },
+          ]}
+        >
+          <Select
+            placeholder="Select station"
+            allowClear
+            loading={stationsLoading}
           >
-            <Form.Item
-              name="busCode"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your bus code!",
-                },
-              ]}
-            >
-              <Input placeholder="bus code" />
-            </Form.Item>
-            <Form.Item
-              name="routeId"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select route!",
-                },
-              ]}
-            >
-              <Select
-                placeholder="Select route"
-                allowClear
-                loading={routesLoading}
-              >
-                {routes?.data?.map((item) => {
-                  return (
-                    <Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="stationId"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select a bus stop!",
-                },
-              ]}
-            >
-              <Select
-                placeholder="Select station"
-                allowClear
-                loading={stationsLoading}
-              >
-                {stations?.data?.map((item) => {
-                  return (
-                    <Option key={item.id} value={item.id}>
-                      {item.stationCode} - {item.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Active" name="status">
-              <Switch />
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-      </Row>
+            {stations?.data?.map((item) => {
+              return (
+                <Option key={item.id} value={item.id}>
+                  {item.stationCode} - {item.name}
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+        <Form.Item label="Active" name="status">
+          <Switch />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </Row>
   );
 };
 

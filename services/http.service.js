@@ -1,23 +1,17 @@
 import axios from "axios";
 import cookieService from "./cookie.service";
 class httpService {
-  
-  async get(url, setData, setServerError, setLoading) {
+  async get(url) {
     const at = cookieService.get("access_token");
-    if( at === undefined) return false; 
     const options = {
       headers: {
         Authorization: "Bearer " + at,
       },
     };
     try {
-      setLoading(true);
-      const response = await axios.get(url, options);
-      setData(response.data);
-      setLoading(false);
-      return true;
+      return await axios.get(url, options);
     } catch (error) {
-      console.log(error)
+      console.error("Not able to fetch data", error);
       return false;
     }
   }

@@ -1,8 +1,4 @@
-import Cookie from "universal-cookie";
 import Cookies from "js-cookie";
-
-const cookie = new Cookie();
-
 class cookieService {
   get(key) {
     return Cookies.get(key);

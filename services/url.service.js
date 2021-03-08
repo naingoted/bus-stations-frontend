@@ -24,8 +24,8 @@ class urlService {
   static getNearbyBusStopUrl() {
     return apiDomain + "api/v1/busStopNearMe"
   }
-  static BusListUrl() {
-    return apiDomain + "api/v1/busList"
+  static getBusListByStationIdUrl() {
+    return apiDomain + "api/v1/busListByStationId"
   }
   static createBusUrl() {
     return apiDomain + "api/v1/buses"

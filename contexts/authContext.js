@@ -1,12 +1,11 @@
 import React, { useReducer } from "react";
-import CookieService from "services/CookieService";
+import cookieService from "@/services/cookie.service";
 
 const AuthStateContext = React.createContext();
 const AuthDispatchContext = React.createContext();
-const isServer = typeof window === "undefined";
 
-let user = CookieService.get("user");
-let token = CookieService.get("access_token");
+let user = cookieService.get("user");
+let token = cookieService.get("access_token");
 
 const initialState = {
   userDetails: user || "",

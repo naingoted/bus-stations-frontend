@@ -1,17 +1,28 @@
-import "../styles/main.scss";
-import Layout from "../components/containers/Layout";
+import Layout from "@/components/containers/Layout";
 import { AuthProvider } from "@/contexts/authContext";
-import { MonitorProvider } from "@/contexts/monitorContext";
+import { AppProvider } from "@/contexts/appContext";
+import "../styles/main.scss";
+import "antd/dist/antd.css";
+
+function SafeHydrate({ children }) {
+  return (
+    <div suppressHydrationWarning>
+      {typeof window === "undefined" ? null : children}
+    </div>
+  );
+}
 
 function MyApp({ Component, pageProps }) {
   return (
-    <AuthProvider>
-      <MonitorProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </MonitorProvider>
-    </AuthProvider>
+    <SafeHydrate>
+      <AuthProvider>
+        <AppProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AppProvider>
+      </AuthProvider>
+    </SafeHydrate>
   );
 }
 

@@ -42,18 +42,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
     styles - named according to /components structure.
 
+## @todo 
 
-## Preview Link
-
-    https://status-page-tawny.vercel.app/
-
-## unit test | @todo
-
-    onclick -> show quick stats
-    reducer
-    axios call
-    context
-    pagination
-    check re renders / preformance
-
-
+    http service and context reformat.
+    remove unecessary components
+    refactor codes
+    responsive, menu collapse.

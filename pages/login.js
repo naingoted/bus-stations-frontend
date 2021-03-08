@@ -1,68 +1,95 @@
-import { useState } from "react";
-import AuthService from "@/services/AuthService";
+import Head from "next/head";
+import authService from "@/services/auth.service";
 import { useRouter } from "next/router";
 import { useAuthDispatch } from "@/contexts/authContext";
+import { useAuthState } from "@/contexts/authContext";
+import { Form, Input, Button, Checkbox, Row, Col } from "antd";
+import Card from "@/components/common/Card";
+
+const layout = {
+  wrapperCol: {
+    span: 24,
+  },
+};
+const tailLayout = {
+  wrapperCol: {
+    span: 24,
+  },
+};
 
 const Login = () => {
   const router = useRouter();
+  const isLoggedIn = authService.isAuthenticated();
   const dispatch = useAuthDispatch();
-  const [formInput, setFormInput] = useState({
-    email: "bradly.vandervort@example.com",
-    password: "password",
-    remember: true,
-  });
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    const response = await AuthService.doUserLogin(dispatch, formInput);
-    
+  const { loading } = useAuthState();
+
+  if (isLoggedIn) {
+    router.push("/");
+  }
+  const onFinish = async (values) => {
+    const response = await authService.doUserLogin(dispatch, values);
     if (response) {
-    //   AuthService.handleLoginSuccess(response, formInput.remember);
-      
+      router.push("/");
     } else {
       alert("Please check your credentials and try agian");
     }
   };
-  console.log(formInput);
-  const updateFormInput = (e) => {
-    e.persist();
-    const value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    setFormInput((prevState) => ({ ...prevState, [e.target.name]: value }));
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
-  return (
-    <div>
-      Sign in
-      <form onSubmit={(e) => handleFormSubmit(e)} method="post">
-        <label htmlFor="email"> Email </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          onChange={updateFormInput}
-          placeholder="email address"
-        //   required
-        />
-        <label htmlFor="password"> Password </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          onChange={updateFormInput}
-          placeholder="password"
-        //   required
-        />
-        <label htmlFor="remember"> Remember me</label>
-        <input
-          type="checkbox"
-          name="remember"
-          id="remember"
-          checked={formInput.remember}
-          onChange={updateFormInput}
-          id=""
-        />
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+
+  return authService.isAuthenticated() ? null : (
+    <Row justify="center">
+      <Head>
+        <title>Login</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Card>
+        <Form
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your username!",
+              },
+            ]}
+          >
+            <Input placeholder="Username" />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password placeholder="Password" />
+          </Form.Item>
+
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </Row>
   );
 };
 

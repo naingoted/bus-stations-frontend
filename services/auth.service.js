@@ -1,17 +1,18 @@
 import axios from "axios";
-import UrlService from "./UrlService";
-import CookieService from "./CookieService";
+import urlService from "./url.service";
+import cookieService from "./cookie.service";
 
 const expiresAt = 60 * 60 * 1000; // 1 hour
 
-class AuthService {
-  async doUserLogin(dispatch, { email, password, remember }) {
+class authService {
+  doUserLogin = async (dispatch, { email, password, remember }) => {
     try {
       dispatch({ type: "REQUEST_LOGIN" });
-      const { data } = await axios.post(UrlService.loginUrl(), {
+      const { data } = await axios.post(urlService.loginUrl(), {
         email,
         password,
       });
+      console.log(data);
 
       if (data?.user && data?.access_token) {
         dispatch({ type: "LOGIN_SUCCESS", payload: data });
@@ -24,9 +25,9 @@ class AuthService {
     } catch (error) {
       dispatch({ type: "LOGIN_ERROR", error: error });
     }
-  }
+  };
 
-  handleLoginSuccess(response, remember) {
+  handleLoginSuccess = (response, remember) => {
     let date = new Date();
     if (!remember) {
       date.setTime(date.getTime() + expiresAt);
@@ -37,11 +38,19 @@ class AuthService {
      * can set httpOnly, secure, sameSite for better security
      */
     const options = { path: "/", expires: date };
-    const userString = JSON.stringify(response.user)
-    CookieService.set("access_token", response.access_token, options);
-    CookieService.set("user", response.u , options);
+    cookieService.set("access_token", response.access_token, options);
+    cookieService.set("user", response.user, options);
     return true;
-  }
+  };
+
+  isAuthenticated = () => {
+    return !!cookieService.get("user");
+  };
+
+  doLogOut = () => {
+    cookieService.remove("user");
+    cookieService.remove("access_token");
+  };
 }
 
-export default new AuthService();
+export default new authService();

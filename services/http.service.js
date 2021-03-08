@@ -1,9 +1,10 @@
 import axios from "axios";
-import CookieService from "./CookieService";
-
-class HttpService {
-  async get(url, setServerError, setLoading) {
-    const at = CookieService.get("access_token");
+import cookieService from "./cookie.service";
+class httpService {
+  
+  async get(url, setData, setServerError, setLoading) {
+    const at = cookieService.get("access_token");
+    if( at === undefined) return false; 
     const options = {
       headers: {
         Authorization: "Bearer " + at,
@@ -12,17 +13,17 @@ class HttpService {
     try {
       setLoading(true);
       const response = await axios.get(url, options);
-      console.log("response", response);
       setData(response.data);
       setLoading(false);
+      return true;
     } catch (error) {
-      setLoading(false);
-      setServerError("Not able to fetch data");
+      console.log(error)
+      return false;
     }
   }
 
   async post(url, data, options = null) {
-    const at = CookieService.get("access_token");
+    const at = cookieService.get("access_token");
     const postOptions = {
       headers: {
         Authorization: "Bearer " + at,
@@ -38,4 +39,4 @@ class HttpService {
   }
 }
 
-export default new HttpService();
+export default new httpService();

@@ -1,41 +1,19 @@
-.nav-bar {
-  background-color: $color-secondary;
-  .logo {
-    line-height: 1;
-    padding: 1.6rem;
-    color: white;
-    font-size: 3rem;
-    @include respond(phone) {
-      font-size: 2rem;
-    }
-  }
-  .info {
-    color: white;
-    text-align: right;
-    padding: 1.6rem;
-    &__title {
-      font-size: 1.6rem;
-    }
-    &__last-update {
-      font-size: 1.4rem;
-      font-weight: 300;
-    }
-    @include respond(phone) {
-      &__title {
-        font-size: 1.3rem;
-      }
-      &__last-update {
-        font-size: 1.2rem;
-        font-weight: 300;
-      }
-    }
-  }
-  .container {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    align-items: center;
-    max-width: 100rem;
-    padding: 4rem 0 6rem;
-  }
+nav ul {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  padding: 10px 20px;
+}
+.active {
+  background-color: #1890ff;
+}
+// .active:after {
+//   content: ' (current page)';
+// }
+.nav li {
+  padding: 0 20px;
 }

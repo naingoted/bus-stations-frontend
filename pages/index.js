@@ -21,7 +21,7 @@ export default function Home() {
   const setExpandedStation = (data) => {
     dispatch({ type: "setExpandedStation", payload: data });
   };
-  const setLoading = () => {
+  const setLoading = (data) => {
     dispatch({ type: "setLoading", payload: data });
   };
   const loadData = useCallback(async () => {
@@ -36,13 +36,18 @@ export default function Home() {
     setStationsNearBy(data);
   });
   const loadDataByStationId = useCallback(async () => {
-    const {
-      data,
-    } = await httpService.post(urlService.getBusListByStationIdUrl(), {
-      stationId: expandedStation,
-    });
+    setLoading(true);
+    const { data } = await httpService.post(
+      urlService.getBusListByStationIdUrl(),
+      {
+        stationId: expandedStation,
+      }
+    );
+
+    console.log(data.data);
     buses[expandedStation] = data.data;
     setBusesData(buses);
+    setLoading(false);
   });
   useEffect(() => {
     loadDataByStationId();
@@ -64,7 +69,10 @@ export default function Home() {
         <title>Nearby Buses</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Row className="bus-list">
+      <Row className="stations card">
+        <Col span={24}>
+          <h2>Near You</h2>
+        </Col>
         <Col span={24}>
           <Collapse
             expandIconPosition={"right"}
@@ -75,18 +83,31 @@ export default function Home() {
             {stationsNearBy?.data?.map((item) => {
               return (
                 <Panel
-                  header={`${item.name} [${item.stationCode}]`}
+                  header={
+                    <div className="station">
+                      <span>{item.name}</span> <span>{item.stationCode}</span>{" "}
+                      <span>{item?.distance.toFixed(2)} km</span>
+                    </div>
+                  }
                   key={item.id}
                 >
-                  {buses[item.id]?.length > 0
-                    ? buses[item.id].map((item) => {
+                  {!loading ? (
+                    buses[item.id]?.length > 0 ? (
+                      buses[item.id].map((item) => {
                         return (
-                          <div key={item.id}>
-                            {item.busCode} <span>5 more min</span>
+                          <div key={item.id} className="bus-timing">
+                            <span>{item.busCode}</span>
+                            <span>{item.id + 1} min</span>
+                            <span>{item.id + 10} min</span>
                           </div>
                         );
                       })
-                    : "no more bus"}
+                    ) : (
+                      <div className="bus-unavailable">no more buses</div>
+                    )
+                  ) : (
+                    <Skeleton active />
+                  )}
                 </Panel>
               );
             })}

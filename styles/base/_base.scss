@@ -29,19 +29,22 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  min-height: 80vh;
   background-color: white;
 }
 
 .ant-layout-footer {
   text-align: center;
-  height: 10vh;
+  height: 15vh;
 }
 
 .ant-layout-header {
   display: flex;
+  padding: 0 !important;
   justify-content: flex-end;
-  height: 10vh;
+  @include respond(phone) {
+    justify-content: space-around;
+  }
 }
 
 

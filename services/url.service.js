@@ -16,25 +16,25 @@ class urlService {
     return apiDomain + "api/v1/users";
   }
   static getStationsUrl() {
-    return apiDomain + "api/v1/stations"
+    return apiDomain + "api/v1/stations";
   }
   static getRoutesUrl() {
-    return apiDomain + "api/v1/routes"
+    return apiDomain + "api/v1/routes";
   }
   static getNearbyBusStopUrl() {
-    return apiDomain + "api/v1/busStopNearMe"
+    return apiDomain + "api/v1/busStopNearMe";
   }
   static getBusListByStationIdUrl() {
-    return apiDomain + "api/v1/busListByStationId"
+    return apiDomain + "api/v1/busListByStationId";
   }
   static createBusUrl() {
-    return apiDomain + "api/v1/buses"
+    return apiDomain + "api/v1/buses";
   }
   static searchRouteUrl() {
-    return apiDomain + "api/v1/searchRoutes"
+    return apiDomain + "api/v1/searchRoutes";
   }
   static searchStationUrl() {
-    return apiDomain + "api/v1/searchStations"
+    return apiDomain + "api/v1/searchStations";
   }
 }
 

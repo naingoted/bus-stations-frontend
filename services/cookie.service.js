@@ -9,7 +9,7 @@ class cookieService {
   }
 
   remove(key) {
-    Cookies.remove(key, {expires: 86400, sameSite: 'lax'});
+    Cookies.remove(key, { expires: 86400, sameSite: "lax" });
   }
 }
 

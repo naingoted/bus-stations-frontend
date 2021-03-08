@@ -7,13 +7,16 @@ nav ul {
   text-decoration: none;
   color: white;
   padding: 10px 20px;
+  border-radius: 5px;
+  height: 64px;
 }
 .active {
   background-color: #1890ff;
 }
-// .active:after {
-//   content: ' (current page)';
-// }
+
 .nav li {
-  padding: 0 20px;
+  // width: 5rem;
+  padding: 0 10px;
+  list-style: none;
+  height: 64px;
 }

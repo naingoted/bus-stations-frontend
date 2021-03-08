@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, rename .env.local.example to .env.local
+First, rename .env.local.example to .env
 
 then, run the development server:
 
@@ -15,36 +15,9 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
-### Page list
-
-    page
-        index - homepage contains movies components
-
-### Components list
-
-    components 
-        Header - for global header
-        Monitor - for monitor module
-        UI  - for layout and UI components
-
-### Contexts
-
-    contexts
-
-### Testing
-
-    integration testing to make sure pagination logic, hooks and context
-    __tests__ - for test files
-        components - named according to /components structure
-            UI
-
-### Styling
-
-    styles - named according to /components structure.
-
-## @todo 
-
-    http service and context reformat.
-    remove unecessary components
-    refactor codes
-    responsive, menu collapse.
+### Todo
+    testing
+    abstracting into smaller components from pages.
+    loading status
+    pagination
+    create bus | search routes and stations name within select dropdown.

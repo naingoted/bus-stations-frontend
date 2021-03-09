@@ -25,6 +25,7 @@ export default function Home() {
     dispatch({ type: "setLoading", payload: data });
   };
   const loadData = useCallback(async () => {
+    setLoading(true);
     const hardCodeLocation = {
       lat: "1.4228059",
       lon: "103.8366647",
@@ -34,34 +35,28 @@ export default function Home() {
       hardCodeLocation
     );
     setStationsNearBy(data);
-  });
-  const loadDataByStationId = useCallback(async () => {
-    setLoading(true);
-    const { data } = await httpService.post(
-      urlService.getBusListByStationIdUrl(),
-      {
-        stationId: expandedStation,
+    for (const station of data.data) {
+      const id = station.id;
+      const response = await httpService.post(
+        urlService.getBusListByStationIdUrl(),
+        {
+          stationId: id,
+        }
+      );
+      if (response?.data?.data) {
+        buses[id] = response.data.data;
       }
-    );
-
-    console.log(data.data);
-    buses[expandedStation] = data.data;
+    }
     setBusesData(buses);
     setLoading(false);
   });
+
   useEffect(() => {
-    loadDataByStationId();
     loadData();
   }, [expandedStation]);
   if (!authService.isAuthenticated()) {
     router.push("/login");
   }
-  // const loadData
-  const handleOnChange = (e) => {
-    if (e !== undefined) {
-      setExpandedStation(e);
-    }
-  };
 
   return authService.isAuthenticated() ? (
     <>
@@ -73,26 +68,21 @@ export default function Home() {
         <Col span={24}>
           <h2>Near You</h2>
         </Col>
-        <Col span={24}>
-          <Collapse
-            expandIconPosition={"right"}
-            ghost={true}
-            accordion
-            onChange={handleOnChange}
-          >
-            {stationsNearBy?.data?.map((item) => {
-              return (
-                <Panel
-                  header={
-                    <div className="station">
-                      <span>{item.name}</span> <span>{item.stationCode}</span>{" "}
-                      <span>{item?.distance.toFixed(2)} km</span>
-                    </div>
-                  }
-                  key={item.id}
-                >
-                  {!loading ? (
-                    buses[item.id]?.length > 0 ? (
+        {!loading ? (
+          <Col span={24}>
+            <Collapse expandIconPosition={"right"} ghost={true} accordion>
+              {stationsNearBy?.data?.map((item) => {
+                return (
+                  <Panel
+                    header={
+                      <div className="station">
+                        <span>{item.name}</span> <span>{item.stationCode}</span>{" "}
+                        <span>{item?.distance.toFixed(2)} km</span>
+                      </div>
+                    }
+                    key={item.id}
+                  >
+                    {buses[item.id]?.length > 0 ? (
                       buses[item.id].map((item) => {
                         return (
                           <div key={item.id} className="bus-timing">
@@ -104,15 +94,15 @@ export default function Home() {
                       })
                     ) : (
                       <div className="bus-unavailable">no more buses</div>
-                    )
-                  ) : (
-                    <Skeleton active />
-                  )}
-                </Panel>
-              );
-            })}
-          </Collapse>
-        </Col>
+                    )}
+                  </Panel>
+                );
+              })}
+            </Collapse>
+          </Col>
+        ) : (
+          <Skeleton active paragraph={{ rows: 10 }} />
+        )}
       </Row>
     </>
   ) : null;

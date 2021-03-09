@@ -12,7 +12,6 @@ class authService {
         email,
         password,
       });
-      console.log(data);
 
       if (data?.user && data?.access_token) {
         dispatch({ type: "LOGIN_SUCCESS", payload: data });

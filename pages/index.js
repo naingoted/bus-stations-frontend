@@ -51,12 +51,14 @@ export default function Home() {
     setLoading(false);
   });
 
+
   useEffect(() => {
-    loadData();
+    if (!authService.isAuthenticated()) {
+      router.push("/login");
+    } else {
+      loadData();
+    }
   }, [expandedStation]);
-  if (!authService.isAuthenticated()) {
-    router.push("/login");
-  }
 
   return authService.isAuthenticated() ? (
     <>

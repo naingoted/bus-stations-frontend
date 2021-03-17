@@ -19,5 +19,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     testing
     abstracting into smaller components from pages.
     loading status
-    pagination
+    refresh token
+    dynamic location.
+    
+    pagination - infinite scroll
     create bus | search routes and stations name within select dropdown.
